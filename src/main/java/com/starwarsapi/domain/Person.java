@@ -22,15 +22,15 @@ public class Person {
     private Long swapiId;
 
     private String name;
-    private int height;
-    private int mass;
+    private String height;
+    private String mass;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return height == person.height && mass == person.mass && swapiId.equals(person.swapiId) && name.equals(person.name);
+        return swapiId.equals(person.swapiId) && name.equals(person.name) && height.equals(person.height) && mass.equals(person.mass);
     }
 
     @Override

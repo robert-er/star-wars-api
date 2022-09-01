@@ -15,15 +15,15 @@ public class PersonDto {
 
     private Long swapiId;
     private String name;
-    private int height;
-    private int mass;
+    private String height;
+    private String mass;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDto personDto = (PersonDto) o;
-        return height == personDto.height && mass == personDto.mass && swapiId.equals(personDto.swapiId) && name.equals(personDto.name);
+        return swapiId.equals(personDto.swapiId) && name.equals(personDto.name) && height.equals(personDto.height) && mass.equals(personDto.mass);
     }
 
     @Override

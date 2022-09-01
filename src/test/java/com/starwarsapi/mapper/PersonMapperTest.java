@@ -16,8 +16,8 @@ class PersonMapperTest {
 
     private static final Long SWAPI_ID = 1L;
     private static final String NAME = "Luke Skywalker";
-    private static final int HEIGHT = 172;
-    private static final int MASS = 77;
+    private static final String HEIGHT = "172";
+    private static final String MASS = "77";
 
     private final Person luke = Person.builder()
             .swapiId(SWAPI_ID)
