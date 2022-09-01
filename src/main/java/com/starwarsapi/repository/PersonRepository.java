@@ -19,3 +19,4 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Optional<Person> findByHeight(String height);
 }
+
