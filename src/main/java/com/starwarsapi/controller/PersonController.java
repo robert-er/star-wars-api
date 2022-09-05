@@ -1,5 +1,6 @@
 package com.starwarsapi.controller;
 
+import com.starwarsapi.client.SwapiClient;
 import com.starwarsapi.dto.PersonDto;
 import com.starwarsapi.exception.NotFoundException;
 import com.starwarsapi.exception.NotValidException;
@@ -19,6 +20,9 @@ public class PersonController {
     @Autowired
     private PersonMapper personMapper;
 
+    @Autowired
+    private SwapiClient swapiClient;
+
     @GetMapping("/{id}")
     public PersonDto getPersonBySwid(@PathVariable Long id) throws NotFoundException {
         return personMapper.mapToPersonDto(personService.getPersonBySwid(id));
@@ -29,8 +33,13 @@ public class PersonController {
         return personMapper.mapToPersonDto(personService.getPersonByName(name));
     }
 
-    @PostMapping("/create")
-    public PersonDto createPerson(@RequestBody PersonDto personDto) throws NotValidException, PersonAlreadyExist {
+    @PostMapping("/create/{id}")
+    public PersonDto createPerson(@PathVariable Long id) throws NotValidException, PersonAlreadyExist {
+        PersonDto personDto = swapiClient.getPersonFromSwapi(id);
+        personDto.setSwid(id);
+
         return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
     }
+
+
 }
