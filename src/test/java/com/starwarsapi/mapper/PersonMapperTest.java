@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -48,5 +50,25 @@ public class PersonMapperTest {
         assertEquals(person.getName(), mappedPersonDto.getName());
         assertEquals(person.getHeight(), mappedPersonDto.getHeight());
         assertEquals(person.getMass(), mappedPersonDto.getMass());
+    }
+
+    @Test
+    public void shouldMapToPersonDtoList() {
+        //given
+        List<Person> personList = PersonTestUtils.createPersonList();
+
+        //when
+        List<PersonDto> personDtoList = personMapper.mapToPersonDtoList(personList);
+
+        //then
+        assertEquals(personList.size(), personDtoList.size());
+        assertEquals(personList.stream().filter((Person e) -> e.getSwid() == 13L).map(Person::getSwid).findFirst(),
+                personDtoList.stream().filter((PersonDto e) -> e.getSwid() == 13L).map(PersonDto::getSwid).findFirst());
+        assertEquals(personList.stream().filter((Person e) -> e.getSwid() == 14L).map(Person::getName).findFirst(),
+                personDtoList.stream().filter((PersonDto e) -> e.getSwid() == 14L).map(PersonDto::getName).findFirst());
+        assertEquals(personList.stream().filter((Person e) -> e.getSwid() == 14L).map(Person::getHeight).findFirst(),
+                personDtoList.stream().filter((PersonDto e) -> e.getSwid() == 14L).map(PersonDto::getHeight).findFirst());
+        assertEquals(personList.stream().filter((Person e) -> e.getSwid() == 15L).map(Person::getMass).findFirst(),
+                personDtoList.stream().filter((PersonDto e) -> e.getSwid() == 15L).map(PersonDto::getMass).findFirst());
     }
 }

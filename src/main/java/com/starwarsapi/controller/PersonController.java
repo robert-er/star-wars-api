@@ -51,10 +51,4 @@ public class PersonController {
         PersonDto personDto = swapiClient.getPersonFromSwapi(id);
         return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
     }
-
-    //test endpoint to create fake db persons
-    @PostMapping("/create/fake")
-    public PersonDto createFakePerson(@RequestBody PersonDto personDto) throws NotValidException, PersonAlreadyExist {
-        return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
-    }
 }

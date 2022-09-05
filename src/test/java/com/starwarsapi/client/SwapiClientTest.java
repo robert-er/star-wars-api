@@ -18,7 +18,7 @@ public class SwapiClientTest {
     private SwapiClient swapiClient;
 
     @Test
-    public void getPersonFromSwapi() {
+    public void shouldGetPersonFromSwapi() {
         //given
         PersonDto localPersonDto = PersonTestUtils.createPersonDto();
         Long swid = localPersonDto.getSwid();
