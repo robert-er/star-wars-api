@@ -4,6 +4,9 @@ import com.starwarsapi.domain.Person;
 import com.starwarsapi.dto.PersonDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class PersonMapper {
 
@@ -18,5 +21,9 @@ public class PersonMapper {
                 .height(person.getHeight())
                 .mass(person.getMass())
                 .build();
+    }
+
+    public List<PersonDto> mapToPersonDtoList(List<Person> personList) {
+        return personList.stream().map(this::mapToPersonDto).collect(Collectors.toList());
     }
 }

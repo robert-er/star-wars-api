@@ -1,5 +1,6 @@
 package com.starwarsapi.service;
 
+import com.starwarsapi.config.DbConfig;
 import com.starwarsapi.domain.Person;
 import com.starwarsapi.exception.NotFoundException;
 import com.starwarsapi.exception.NotValidException;
@@ -8,11 +9,18 @@ import com.starwarsapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PersonServiceImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private DbConfig dbConfig;
 
     @Override
     public Person createPerson(Person person) throws NotValidException, PersonAlreadyExist {
@@ -34,6 +42,26 @@ public class PersonServiceImpl implements PersonService {
     public Person getPersonByName(String name) throws NotFoundException {
         return personRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with name: %s not found", name)));
+    }
+
+    @Override
+    public List<Person> getPersonBySubstringName(String sub) throws SQLException, NotFoundException {
+        List<Person> result = new ArrayList<>();
+
+        Connection con = DriverManager.getConnection(dbConfig.getDbUrl(), dbConfig.getDbUsername(), dbConfig.getDbPassword());
+
+        String query = "SELECT name FROM person WHERE name LIKE _";
+
+        String subExpr = "'%" + sub + "%'";
+        query = query.replaceFirst("[_]", subExpr);
+
+        PreparedStatement getPeople = con.prepareStatement(query);
+        ResultSet resultSet = getPeople.executeQuery();
+
+        while (resultSet.next()) {
+            result.add(getPersonByName(resultSet.getString("name")));
+        }
+        return result;
     }
 
     @Override

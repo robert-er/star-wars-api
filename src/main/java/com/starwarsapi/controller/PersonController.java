@@ -10,6 +10,9 @@ import com.starwarsapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+import java.util.List;
+
 @RestController
 @RequestMapping("/people")
 public class PersonController {
@@ -33,11 +36,22 @@ public class PersonController {
         return personMapper.mapToPersonDto(personService.getPersonByName(name));
     }
 
+    @GetMapping("/name/sub/{subName}")
+    public List<PersonDto> getPersonBySubstringName(@PathVariable String subName) throws SQLException, NotFoundException {
+        return personMapper.mapToPersonDtoList(personService.getPersonBySubstringName(subName));
+    }
+
     @PostMapping("/create/{id}")
     public PersonDto createPerson(@PathVariable Long id) throws NotValidException, PersonAlreadyExist {
         PersonDto personDto = swapiClient.getPersonFromSwapi(id);
         personDto.setSwid(id);
 
+        return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
+    }
+
+    //test endpoint to create fake db persons
+    @PostMapping("/create/fake")
+    public PersonDto createFakePerson(@RequestBody PersonDto personDto) throws NotValidException, PersonAlreadyExist {
         return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
     }
 
