@@ -2,6 +2,7 @@ package com.starwarsapi.mapper;
 
 import com.starwarsapi.domain.Person;
 import com.starwarsapi.dto.PersonDto;
+import com.starwarsapi.utils.PersonTestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,57 +13,42 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {PersonMapper.class})
-class PersonMapperTest {
+public class PersonMapperTest {
 
-    private static final Long SWAPI_ID = 1L;
-    private static final String NAME = "Luke Skywalker";
-    private static final String HEIGHT = "172";
-    private static final String MASS = "77";
 
-    private final Person luke = Person.builder()
-            .swapiId(SWAPI_ID)
-            .name(NAME)
-            .height(HEIGHT)
-            .mass(MASS)
-            .build();
-
-    private final PersonDto lukeDto = PersonDto.builder()
-            .swapiId(SWAPI_ID)
-            .name(NAME)
-            .height(HEIGHT)
-            .mass(MASS)
-            .build();
 
     @Autowired
     private PersonMapper personMapper;
 
     @Test
-    public void mapToPerson() {
+    public void shouldMapToPerson() {
         //given
         Person mappedPerson;
+        PersonDto personDto = PersonTestUtils.createPersonDto();
 
         //when
-        mappedPerson = personMapper.mapToPerson(lukeDto);
+        mappedPerson = personMapper.mapToPerson(personDto);
 
         //then
-        assertEquals(lukeDto.getSwapiId(), mappedPerson.getSwapiId());
-        assertEquals(lukeDto.getName(), mappedPerson.getName());
-        assertEquals(lukeDto.getHeight(), mappedPerson.getHeight());
-        assertEquals(lukeDto.getMass(), mappedPerson.getMass());
+        assertEquals(personDto.getSwid(), mappedPerson.getSwid());
+        assertEquals(personDto.getName(), mappedPerson.getName());
+        assertEquals(personDto.getHeight(), mappedPerson.getHeight());
+        assertEquals(personDto.getMass(), mappedPerson.getMass());
     }
 
     @Test
-    public void mapToPersonDto() {
+    public void shouldMapToPersonDto() {
         //given
         PersonDto mappedPersonDto;
+        Person person = PersonTestUtils.createPerson();
 
         //when
-        mappedPersonDto = personMapper.mapToPersonDto(luke);
+        mappedPersonDto = personMapper.mapToPersonDto(person);
 
         //then
-        assertEquals(luke.getSwapiId(), mappedPersonDto.getSwapiId());
-        assertEquals(luke.getName(), mappedPersonDto.getName());
-        assertEquals(luke.getHeight(), mappedPersonDto.getHeight());
-        assertEquals(luke.getMass(), mappedPersonDto.getMass());
+        assertEquals(person.getSwid(), mappedPersonDto.getSwid());
+        assertEquals(person.getName(), mappedPersonDto.getName());
+        assertEquals(person.getHeight(), mappedPersonDto.getHeight());
+        assertEquals(person.getMass(), mappedPersonDto.getMass());
     }
 }

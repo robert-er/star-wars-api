@@ -5,12 +5,14 @@ import com.starwarsapi.exception.NotFoundException;
 import com.starwarsapi.exception.NotValidException;
 import com.starwarsapi.exception.PersonAlreadyExist;
 import com.starwarsapi.repository.PersonRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
+@Service
 public class PersonServiceImpl implements PersonService {
 
-    private final PersonRepository personRepository;
+    @Autowired
+    private PersonRepository personRepository;
 
     @Override
     public Person createPerson(Person person) throws NotValidException, PersonAlreadyExist {
@@ -23,9 +25,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person getPersonById(Long id) throws NotFoundException {
-        return personRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with id: %s not found", id)));
+    public Person getPersonBySwid(Long id) throws NotFoundException {
+        return personRepository.findBySwid(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with SW id: %s not found", id)));
     }
 
     @Override
@@ -35,13 +37,14 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person getPersonByHeight(String height) {
-        return new Person();
+    public Person getPersonByHeight(String height) throws NotFoundException {
+        return personRepository.findByHeight(height)
+                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with height: %s not found", height)));
     }
 
     private void validatePerson(Person person) throws NotValidException {
-        if (person.getSwapiId() == null) {
-            throw new NotValidException(String.format("Wrong person id: %s", person.getSwapiId()));
+        if (person.getSwid() == null) {
+            throw new NotValidException(String.format("Wrong person SW id: %s", person.getSwid()));
         }
         if (person.getName() == null) {
             throw new NotValidException(String.format("Wrong person name: %s", person.getName()));

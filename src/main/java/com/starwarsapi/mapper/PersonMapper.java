@@ -8,17 +8,12 @@ import org.springframework.stereotype.Component;
 public class PersonMapper {
 
     public Person mapToPerson(PersonDto personDto) {
-        return Person.builder()
-                .swapiId(personDto.getSwapiId())
-                .name(personDto.getName())
-                .height(personDto.getHeight())
-                .mass(personDto.getMass())
-                .build();
+        return new Person(personDto.getSwid(), personDto.getName(), personDto.getHeight(), personDto.getMass());
     }
 
     public PersonDto mapToPersonDto(Person person) {
         return PersonDto.builder()
-                .swapiId(person.getSwapiId())
+                .swid(person.getSwid())
                 .name(person.getName())
                 .height(person.getHeight())
                 .mass(person.getMass())

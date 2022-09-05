@@ -13,7 +13,7 @@ import java.util.Objects;
 @Builder
 public class PersonDto {
 
-    private Long swapiId;
+    private Long swid;
     private String name;
     private String height;
     private String mass;
@@ -23,11 +23,11 @@ public class PersonDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDto personDto = (PersonDto) o;
-        return swapiId.equals(personDto.swapiId) && name.equals(personDto.name) && height.equals(personDto.height) && mass.equals(personDto.mass);
+        return swid.equals(personDto.swid) && name.equals(personDto.name) && height.equals(personDto.height) && mass.equals(personDto.mass);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(swapiId, name, height, mass);
+        return Objects.hash(swid, name, height, mass);
     }
 }
