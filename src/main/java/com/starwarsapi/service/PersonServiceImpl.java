@@ -33,9 +33,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person getPersonBySwid(Long id) throws NotFoundException {
-        return personRepository.findBySwid(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with SW id: %s not found", id)));
+    public Person getPersonBySwid(Long swid) throws NotFoundException {
+        return personRepository.findBySwid(swid)
+                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with SW id: %s not found", swid)));
     }
 
     @Override
@@ -53,17 +53,15 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person getPersonByHeight(String height) throws NotFoundException {
-        return personRepository.findByHeight(height)
-                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with height: %s not found", height)));
-    }
-
-    @Override
     public List<Person> getPeopleByMaxHeight() throws SQLException, NotFoundException {
         String query = "SELECT name FROM person WHERE height < _";
         query = query.replaceFirst("[_]", dbConfig.getMaxHeight());
 
         return getPeople(query);
+    }
+
+    public void deleteByName(String name) {
+        personRepository.deleteByName(name);
     }
 
     private List<Person> getPeople(String query) throws SQLException, NotFoundException {

@@ -12,10 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {PersonMapper.class})
+@SpringBootTest
 public class PersonMapperTest {
-
-
 
     @Autowired
     private PersonMapper personMapper;

@@ -28,8 +28,10 @@ public class SwapiClient {
         URI url = getUri(id);
 
         try {
-            PersonDto boardResponse = restTemplate.getForObject(url, PersonDto.class);
-            return Optional.ofNullable(boardResponse).orElseGet(PersonDto::new);
+            PersonDto clientResponse = restTemplate.getForObject(url, PersonDto.class);
+            assert clientResponse != null;
+            clientResponse.setSwid(id);
+            return Optional.of(clientResponse).orElseGet(PersonDto::new);
         } catch (RestClientException e) {
             LOGGER.error(e.getMessage(), e);
             return new PersonDto();

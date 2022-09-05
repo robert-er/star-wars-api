@@ -4,10 +4,12 @@ import com.starwarsapi.domain.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Repository
+@Transactional
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Override
@@ -20,6 +22,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Optional<Person> findByName(String name);
 
-    Optional<Person> findByHeight(String height);
+    void deleteByName(String name);
 }
 

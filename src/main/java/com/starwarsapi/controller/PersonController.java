@@ -49,8 +49,6 @@ public class PersonController {
     @PostMapping("/create/{id}")
     public PersonDto createPerson(@PathVariable Long id) throws NotValidException, PersonAlreadyExist {
         PersonDto personDto = swapiClient.getPersonFromSwapi(id);
-        personDto.setSwid(id);
-
         return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
     }
 

@@ -11,9 +11,9 @@ import java.util.List;
 public interface PersonService {
 
     Person createPerson(Person person) throws NotValidException, PersonAlreadyExist;
-    Person getPersonBySwid(Long id) throws NotFoundException;
+    Person getPersonBySwid(Long swid) throws NotFoundException;
     Person getPersonByName(String name) throws NotFoundException;
     List<Person> getPersonBySubstringName(String sub) throws SQLException, NotFoundException;
-    Person getPersonByHeight(String height) throws NotFoundException;
     List<Person> getPeopleByMaxHeight() throws SQLException, NotFoundException;
+    void deleteByName(String name);
 }
