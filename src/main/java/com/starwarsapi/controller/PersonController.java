@@ -41,6 +41,11 @@ public class PersonController {
         return personMapper.mapToPersonDtoList(personService.getPersonBySubstringName(subName));
     }
 
+    @GetMapping("/maxheight")
+    public List<PersonDto> getPeopleByMaxHeight() throws SQLException, NotFoundException {
+        return personMapper.mapToPersonDtoList(personService.getPeopleByMaxHeight());
+    }
+
     @PostMapping("/create/{id}")
     public PersonDto createPerson(@PathVariable Long id) throws NotValidException, PersonAlreadyExist {
         PersonDto personDto = swapiClient.getPersonFromSwapi(id);
@@ -54,6 +59,4 @@ public class PersonController {
     public PersonDto createFakePerson(@RequestBody PersonDto personDto) throws NotValidException, PersonAlreadyExist {
         return personMapper.mapToPersonDto(personService.createPerson(personMapper.mapToPerson(personDto)));
     }
-
-
 }

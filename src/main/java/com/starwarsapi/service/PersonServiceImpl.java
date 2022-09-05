@@ -46,14 +46,29 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> getPersonBySubstringName(String sub) throws SQLException, NotFoundException {
-        List<Person> result = new ArrayList<>();
-
-        Connection con = DriverManager.getConnection(dbConfig.getDbUrl(), dbConfig.getDbUsername(), dbConfig.getDbPassword());
-
         String query = "SELECT name FROM person WHERE name LIKE _";
+        query = query.replaceFirst("[_]", "'%" + sub + "%'");
 
-        String subExpr = "'%" + sub + "%'";
-        query = query.replaceFirst("[_]", subExpr);
+        return getPeople(query);
+    }
+
+    @Override
+    public Person getPersonByHeight(String height) throws NotFoundException {
+        return personRepository.findByHeight(height)
+                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with height: %s not found", height)));
+    }
+
+    @Override
+    public List<Person> getPeopleByMaxHeight() throws SQLException, NotFoundException {
+        String query = "SELECT name FROM person WHERE height < _";
+        query = query.replaceFirst("[_]", dbConfig.getMaxHeight());
+
+        return getPeople(query);
+    }
+
+    private List<Person> getPeople(String query) throws SQLException, NotFoundException {
+        List<Person> result = new ArrayList<>();
+        Connection con = DriverManager.getConnection(dbConfig.getDbUrl(), dbConfig.getDbUsername(), dbConfig.getDbPassword());
 
         PreparedStatement getPeople = con.prepareStatement(query);
         ResultSet resultSet = getPeople.executeQuery();
@@ -62,12 +77,6 @@ public class PersonServiceImpl implements PersonService {
             result.add(getPersonByName(resultSet.getString("name")));
         }
         return result;
-    }
-
-    @Override
-    public Person getPersonByHeight(String height) throws NotFoundException {
-        return personRepository.findByHeight(height)
-                .orElseThrow(() -> new NotFoundException(String.format("Star Wars person with height: %s not found", height)));
     }
 
     private void validatePerson(Person person) throws NotValidException {

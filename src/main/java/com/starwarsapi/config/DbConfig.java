@@ -16,4 +16,7 @@ public class DbConfig {
 
     @Value("${spring.datasource.password}")
     private String dbPassword;
+
+    @Value("${max.height}")
+    private String maxHeight;
 }

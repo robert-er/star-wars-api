@@ -15,4 +15,5 @@ public interface PersonService {
     Person getPersonByName(String name) throws NotFoundException;
     List<Person> getPersonBySubstringName(String sub) throws SQLException, NotFoundException;
     Person getPersonByHeight(String height) throws NotFoundException;
+    List<Person> getPeopleByMaxHeight() throws SQLException, NotFoundException;
 }
